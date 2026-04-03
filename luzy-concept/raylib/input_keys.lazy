@@ -1,0 +1,34 @@
+import raylib
+
+const SCREEN_WIDTH:  int = 800
+const SCREEN_HEIGHT: int = 450
+
+init_window(SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - input keys")
+
+var ball_postion: vector_2 = {
+        x = SCREEN_WIDTH  / 2,
+        y = SCREEN_HEIGHT / 2,
+    }
+
+set_target_fps(60)
+
+while not window_should_close() do
+
+    if is_key_down(KEY_RIGHT) then ball_postion.x += 2.0 end
+    if is_key_down(KEY_LEFT)  then ball_postion.x -= 2.0 end
+    if is_key_down(KEY_UP)    then ball_postion.y -= 2.0 end
+    if is_key_down(KEY_DOWN)  then ball_postion.y += 2.0 end
+
+
+    begin_drawing()
+
+        clear_background(RAYWHITE)
+
+        draw_text("move the ball with arrow keys", 10, 10, 20, DARKGRAY)
+
+        draw_circle_v(ball_postion, 50, MAROON)
+    
+    end_drawing()
+end
+
+close_window()
