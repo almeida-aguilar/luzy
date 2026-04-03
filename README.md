@@ -1,145 +1,112 @@
 # The Luzy Programming Language
 
 ## Index
-
 - [Comments](#comments)
 - [Mutability](#mutability)
 - [Basic Types](#basic-types)
 
 ## Comments
 
-Comments starts with `--` just as Lua
+Comments start with `--` just as Lua.
 
 ```
 -- This is a comment
 var hello = "world" --> this is a comment too
--- the part a I like the most of this type of
+-- the part I like the most of this type of
 -- comments is that you can create cute arrows
 --> like this
 ```
 
-## Mutabilty
+## Mutability
 
-The `var` keyword indicates that the value can change
+The `var` keyword indicates that the value can change.
 
 ```
 var health_points = 100
 health_points = 90
 ```
 
-Instead, the `const` keyword indicates that the value can not change
+Instead, the `const` keyword indicates that the value cannot change.
 
 ```
 const PI = 3.14159
-PI = 3 --> this will pop an error
+PI = 3 --> this will throw an error
 ```
 
-# Basic Types
+## Basic Types
 
 ```
 var answer: int = 42
 const PI: float = 3.14159
 var is_cool: bool = true
 var favorite_streamer: string = "Tsoding"
-var status: rune = '🫩' --> this is utf-8
 ```
 
+### Type inference
 
-## Funciones
-
-```luzy
-fun suma(a: int, b: int): int
-    return a + b
-end
+```
+var answer = 42
+const PI = 3.14159
+var is_cool = true
+var favorite_streamer = "Tsoding"
 ```
 
-## Array
+### Type compatibility
 
-```luzy
-var lista_a: []int = {1, 2, 3}
-var lista_b = lista_a -- lista_b es una COPIA física de lista_a
+Between `float` and `int` there are some important behaviors. `float` accepts `int` values (automatically promoted), but `int` does not accept `float`.
 
-lista_a.add(4)
--- lista_a es {1, 2, 3, 4}
--- lista_b sigue siendo {1, 2, 3}
+**Float compatibility with Int:**
 
-const lista_c []string  = {"manzana", "banana", "coco"}
-lista_c.add("piña") -- ERROR: los arrays constantes no pueden ser modificados
+```
+var x_chord: float = 10.5
+x_chord = 3
+print(x_chord)
 ```
 
-## Definicion de tipos
-
-### Alias
-
-```luzy
-type ID: int
-type Kilometros: float
-type Segundos: int
+```
+> 3.0
 ```
 
-### Struct
+**Int compatibility with Float:**
 
-```luzy
-type Player struct
-    nombre: string
-    salud:  int
-    equipamiento: []string
-end
-
-var player: Player = { nombre = "hero", salud = 100,
-                       equipamiento = {"espada", "escudo"}
-                     }
+```
+var level: int = 10
+level = 1.5
 ```
 
-### Enums
-
-```luzy
-type EstadoMotor enum
-    Apagado
-    Encendido
-    Falla
-end
+```
+> ERROR: You cannot assign a float value to an int
 ```
 
-### Funcion (callback)
+To make it work you have to convert the `float` value to `int`.
 
-```luzy
-type LoggerFunc: fun(msg: string)
-
-fun ejecutar_con_log(log: LoggerFunc)
-    log("Ejecutando tarea...")
-end
+```
+var level: int = 10
+level = floor(1.5)
+print(level)
 ```
 
-## Paso de parametros
-
-```luzy
--- 'p' es una copia. Los cambios aquí no afectan al original.
-fun simular(p: Player)
-    p.Salud = 0 
-end
--- 'const p' indica que recibimos el objeto original solo lectura (Referencia).
-fun simular(const p: Player)
-    p.Salud = 0 
-end
--- 'var p' indica que recibimos el objeto original (Referencia).
-fun curar(var p: Player, cantidad: int)
-    p.Salud = p.Salud + cantidad
-end
+```
+> 1
 ```
 
-## Bucles
+> [!DECISION]
+> There is no `float()` or `int()` casting. I have decided to keep `float` and `int` as types, and let the `floor()`, `ceil()` and `round()` functions handle the conversion.
 
-```luzy
-while (true) do
-    print("infinito")
-end
+### No implicit type coercion
 
-for var i = 0 until i is 10 next i = i + 1 do 
-    print(i) -- 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-end
+Outside of the `float`/`int` relationship described above, there is no compatibility between types. Any operation or assignment that mixes unrelated types will throw an error.
 
-for var i = 0 while i < 10 next i = i + 1 do 
-    print(i) -- 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-end
 ```
+var name: string = "Luzy"
+var age: int = 3
+var result = name + age --> ERROR: Cannot use operator '+' between string and int
+```
+
+```
+var flag: bool = true
+var score: int = 10
+score = flag --> ERROR: Cannot assign a bool value to an int
+```
+
+This applies to all type combinations: `string` with `int`, `string` with `float`, `string` with `bool`, `bool` with `int`, and so on.
