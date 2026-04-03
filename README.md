@@ -1,7 +1,8 @@
-# the luzy programming language
+# The Luzy Programming Language
 
-Luzy es un lenguage de programacion de scripting diseñado para
-ser legible, intiutivo y facil.
+## Filosofy
+
+Luzy is a scripting programing language that try to take the best parts form [Zig](https://ziglang.org/) and [Lua](https://www.lua.org/)
 
 ## Tipos
 
