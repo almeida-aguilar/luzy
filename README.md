@@ -1,5 +1,9 @@
 # The Luzy Programming Language
 
+## Index
+1. [Filosofy](#Filosofy)
+2. 
+
 ## Filosofy
 
 Luzy is a scripting programing language that try to take the best parts form [Zig](https://ziglang.org/) and [Lua](https://www.lua.org/)
