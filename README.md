@@ -1,24 +1,49 @@
 # The Luzy Programming Language
 
 ## Index
-1. [Filosofy](#Filosofy)
-2. 
 
-## Filosofy
+- [Comments](#comments)
+- [Mutability](#mutability)
+- [Basic Types](#basic-types)
 
-Luzy is a scripting programing language that try to take the best parts form [Zig](https://ziglang.org/) and [Lua](https://www.lua.org/)
+## Comments
 
-## Tipos
+Comments starts with `--` just as Lua
 
-```luzy
--- constantes
-const pi: float = 3.14159
-const nombre = "Luan" -- Tipo inferido
-
--- mutables
-var constador: int = 0
-constador = 10 -- mutable por defecto
 ```
+-- This is a comment
+var hello = "world" --> this is a comment too
+-- the part a I like the most of this type of
+-- comments is that you can create cute arrows
+--> like this
+```
+
+## Mutabilty
+
+The `var` keyword indicates that the value can change
+
+```
+var health_points = 100
+health_points = 90
+```
+
+Instead, the `const` keyword indicates that the value can not change
+
+```
+const PI = 3.14159
+PI = 3 --> this will pop an error
+```
+
+# Basic Types
+
+```
+var answer: int = 42
+const PI: float = 3.14159
+var is_cool: bool = true
+var favorite_streamer: string = "Tsoding"
+var status: rune = '🫩' --> this is utf-8
+```
+
 
 ## Funciones
 
