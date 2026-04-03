@@ -299,27 +299,27 @@ Same rules as integer division — only works between `int` operands.
 Compound assignment operators follow the same type rules as their base operators.
 
 ```
-var vida = 100       -- int
-vida += 10           -- OK: 110 (int)
-vida *= 1.5          -- ERROR: Cannot assign float to int
+var health = 100       -- int
+health += 10           -- OK: 110 (int)
+health *= 1.5          -- ERROR: Cannot assign float to int
 
-var escala = 1.0     -- float
-escala += 5          -- OK: 6.0 (int promoted to float)
-escala *= 2.5        -- OK: 2.5 (float)
+var scale = 1.0     -- float
+scale += 5          -- OK: 6.0 (int promoted to float)
+scale *= 2.5        -- OK: 2.5 (float)
 
 var pos_x = 10.0
 pos_x /= 2           -- OK: 5.0 (float)
 
-var puntos = 10
-puntos /= 2          -- ERROR: Cannot assign float to int, use '//=' for integer division
+var points = 10
+points /= 2          -- ERROR: Cannot assign float to int, use '//=' for integer division
 
-var municion = 50
-municion //= 2       -- OK: 25 (int)
-municion div= 3      -- OK: 8  (int)
+var bullets = 50
+bullets //= 2       -- OK: 25 (int)
+bullets div= 3      -- OK: 8  (int)
 
-var resto = 10
-resto %= 3           -- OK: 1 (int)
-resto mod= 3         -- OK: 1 (int)
+var remainder = 10
+remainder %= 3           -- OK: 1 (int)
+remainder mod= 3         -- OK: 1 (int)
 
 var f = 10.0
 f //= 2              -- ERROR: Integer division is not valid for float
