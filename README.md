@@ -6,6 +6,11 @@
 - [Basic Types](#basic-types)
 - [Basic Functions](#basic-functions)
 - [Basic Operators](#basic-operators)
+- [Types Definition](#types-definition)
+- [Data Structures](#data-structures)
+- [Control Flow](#control-flow)
+- [Loops](#loops)
+- [Null and Error Handling](#null-and-error-handling)
 
 ## Comments
 
@@ -299,27 +304,27 @@ Same rules as integer division — only works between `int` operands.
 Compound assignment operators follow the same type rules as their base operators.
 
 ```
-var health = 100       -- int
-health += 10           -- OK: 110 (int)
-health *= 1.5          -- ERROR: Cannot assign float to int
+var vida = 100       -- int
+vida += 10           -- OK: 110 (int)
+vida *= 1.5          -- ERROR: Cannot assign float to int
 
-var scale = 1.0     -- float
-scale += 5          -- OK: 6.0 (int promoted to float)
-scale *= 2.5        -- OK: 2.5 (float)
+var escala = 1.0     -- float
+escala += 5          -- OK: 6.0 (int promoted to float)
+escala *= 2.5        -- OK: 2.5 (float)
 
 var pos_x = 10.0
 pos_x /= 2           -- OK: 5.0 (float)
 
-var points = 10
-points /= 2          -- ERROR: Cannot assign float to int, use '//=' for integer division
+var puntos = 10
+puntos /= 2          -- ERROR: Cannot assign float to int, use '//=' for integer division
 
-var bullets = 50
-bullets //= 2       -- OK: 25 (int)
-bullets div= 3      -- OK: 8  (int)
+var municion = 50
+municion //= 2       -- OK: 25 (int)
+municion div= 3      -- OK: 8  (int)
 
-var remainder = 10
-remainder %= 3           -- OK: 1 (int)
-remainder mod= 3         -- OK: 1 (int)
+var resto = 10
+resto %= 3           -- OK: 1 (int)
+resto mod= 3         -- OK: 1 (int)
 
 var f = 10.0
 f //= 2              -- ERROR: Integer division is not valid for float
@@ -381,3 +386,337 @@ a > b
 a >= b
 a <= b
 ```
+
+## Types Definition
+
+> [!DECISION]
+> Custom type declarations follow the same style as variables and functions, keeping the language visually consistent.
+
+### Aliases
+
+An alias gives a new name to an existing type. It is useful for adding semantic meaning to primitive values.
+
+```
+type ID: int
+type Name: string
+```
+
+```
+const entity: ID = 0
+println(entity)
+```
+
+```
+> 0
+```
+
+### Callbacks
+
+A callback is a type alias for a function signature. It allows functions to be passed as arguments.
+
+```
+type Update: fun(delta_time: float)
+type DebugMessage: fun(message: string)
+type Compare: fun(a: string, b: string): bool
+```
+
+```
+fun file_error(message: string) =
+    println("File Error: ", message)
+end
+
+fun open_file(error_message: DebugMessage): File =
+    ...
+    error_message(file)
+    ...
+end
+
+const file = open_file(file_error)
+```
+
+### Structs
+
+```
+type Player: struct =
+    id: ID
+    health: int
+    name: string
+    alive: bool
+end
+```
+
+A struct can be initialized in three different ways, as long as the type is specified on at least one side of `=`.
+
+```
+var player: Player = Player.{.id = 0,
+                              .health = 100,
+                              .name = "Hero",
+                              .alive = true}
+```
+
+```
+var player: Player = .{.id = 0,
+                       .health = 100,
+                       .name = "Hero",
+                       .alive = true}
+```
+
+```
+var player = Player.{.id = 0,
+                     .health = 100,
+                     .name = "Hero",
+                     .alive = true}
+```
+
+```
+println(player.id)
+```
+
+```
+> 0
+```
+
+### Enums
+
+An enum is a group of aliases. Its fields can have different types since each field is essentially a named constant.
+
+```
+type State: enum =
+    Idle: int = 0
+    Hide: int = 1
+    Run:  int = 2
+    Find: string = "something"
+end
+```
+
+Just like structs, enums can be initialized in three different ways.
+
+```
+var state: State = State.Idle
+```
+
+```
+var state: State = .Idle
+```
+
+```
+var state = State.Idle
+```
+
+```
+println(state)
+```
+
+```
+> 0
+```
+
+## Data Structures
+
+### Array
+
+Arrays are initialized with a type and a size. Arrays cannot change size — elements cannot be added or removed.
+
+```
+var my_array: array(int, 5) = {1, 2, 3, 4, 5}
+println(my_array.at(0))
+println(my_array[1])
+```
+
+```
+> 1
+> 2
+```
+
+The size can be inferred from the initial value, just like in C.
+
+```
+var my_array: array(int) = {1, 2, 3, 4, 5}
+println(my_array.at(0))
+println(my_array[1])
+```
+
+```
+> 1
+> 2
+```
+
+### List
+
+Lists are initialized with just a type. Unlike arrays, lists can change size — elements can be added or removed.
+
+```
+var my_list: list(int) = {1, 2, 3, 4, 5}
+
+my_list.add(6)
+
+println(my_list.at(5))
+println(my_list[1])
+```
+
+```
+> 6
+> 2
+```
+
+> [!DECISION]
+> `.at()` and `[]` are equivalent. `.at()` is provided for newcomers who find it more readable, while `[]` is available for experienced programmers who prefer the classic syntax.
+
+### TODO
+
+Interactions between data structures are not fully defined yet.
+
+## Control Flow
+
+Control flow follows the same style as Lua.
+
+```
+if number_a > number_b then
+    println("number a is greater than b")
+elseif number_a < number_b then
+    println("number b is greater than a")
+else
+    println("a and b are equal")
+end
+```
+
+## Loops
+
+### While loop
+
+Repeats while a condition is true.
+
+```
+var i: int = 0
+while i < 10 then
+    println(i)
+    i += 1
+end
+```
+
+```
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> 6
+> 7
+> 8
+> 9
+```
+
+### Until loop
+
+Repeats until a condition is true. The inverse of `while`.
+
+```
+var i: int = 0
+until i is 10 then
+    println(i)
+    i += 1
+end
+```
+
+```
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> 6
+> 7
+> 8
+> 9
+```
+
+### For loop
+
+The `for` loop has two condition styles — `while` and `until` — which follow the same logic as their standalone counterparts.
+
+```
+for var i = 0 while i < 10 next i += 1 do
+    println(i)
+end
+```
+
+```
+for var i = 0 until i is 10 next i += 1 do
+    println(i)
+end
+```
+
+```
+> 0
+> 1
+> 2
+> 3
+> 4
+> 5
+> 6
+> 7
+> 8
+> 9
+```
+
+Iterating over a collection:
+
+```
+var my_list: list(int) = {1, 2, 3, 4, 5}
+my_list.add(6)
+
+for e in my_list do
+    println(e)
+end
+```
+
+```
+> 1
+> 2
+> 3
+> 4
+> 5
+> 6
+```
+
+## Null and Error Handling
+
+Two new types are introduced here: `null` and `error`, along with their aliases `empty` and `broken`. A type followed by `?` indicates that it can hold a value or be `null`. A type followed by `!` indicates that it can hold a value or be an `error`.
+
+### Null or Empty
+
+```
+var enemy: Enemy? = find_enemy()
+if enemy == null then
+    println("No enemies nearby")
+end
+```
+
+```
+var enemy: Enemy? = find_enemy()
+if enemy is empty then
+    println("No enemies nearby")
+end
+```
+
+Both guard statements are equivalent. This check is mandatory before accessing the value.
+
+### Error or Broken
+
+```
+var file: File! = open_file()
+if file == error then
+    println("Error: ", file)
+end
+```
+
+```
+var file: File! = open_file()
+if file is broken then
+    println("Error: ", file)
+end
+```
+
+Both guard statements are equivalent. A type followed by `!` indicates that it can hold a value or be an error. This check is mandatory before accessing the value. Errors are treated as strings, which allows them to be displayed directly with `println`.
